@@ -61,7 +61,8 @@
                    | set its name to something other than its default name (typically the simple class name).
                    -->
                 <entry key-ref="proxyAuthenticationHandler" value-ref="proxyPrincipalResolver" />
-                <entry key-ref="primaryAuthenticationHandler" value-ref="primaryPrincipalResolver" />
+                <entry key-ref="customAuthHandler" value-ref="primaryPrincipalResolver" />
+                <!--<entry key-ref="primaryAuthenticationHandler" value-ref="primaryPrincipalResolver" />-->
             </map>
         </constructor-arg>
 
@@ -88,7 +89,7 @@
     </bean>
 
     <!-- Required for proxy ticket mechanism. -->
-    <bean id="proxyAuthenticationHandler"
+    <bean id="proxyAuthenticationHandler" p:requireSecure="false"
           class="org.jasig.cas.authentication.handler.support.HttpBasedServiceCredentialsAuthenticationHandler"
           p:httpClient-ref="httpClient" />
 
@@ -108,10 +109,32 @@
           class="org.jasig.cas.authentication.AcceptUsersAuthenticationHandler">
         <property name="users">
             <map>
-                <entry key="casuser" value="Mellon"/>
+                <entry key="test_zuosl" value="123"/>
             </map>
         </property>
     </bean>
+
+    <!--  <bean id="dataSource" class="com.microsoft.sqlserver.jdbc.SQLServerXADataSource"
+             p:driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+             p:jdbcUrl="jdbc:sqlserver://130.130.0.56:1433;DatabaseName=dam_new20140404"
+             p:user="dam_new"
+             p:password="daba8002zxc_dam" />   -->
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+        <property name="url" value="jdbc:sqlserver://130.130.0.56:1433;DatabaseName=dam_new" />
+        <property name="username" value="dam_new" />
+        <property name="password" value="daba8002zxc_dam" />
+    </bean>
+
+    <bean id="passwordEncoder" class="com.ecidi.dam.MyPasswordEncoder"
+          c:encodingAlgorithm="MD5"
+          p:characterEncoding="UTF-8" />
+
+    <bean id="customAuthHandler" class="org.jasig.cas.adaptors.jdbc.QueryDatabaseAuthenticationHandler"
+          p:dataSource-ref="dataSource"
+          p:passwordEncoder-ref="passwordEncoder"
+          p:sql="select mm from yhgl where zh=?" />
 
     <!-- Required for proxy ticket mechanism -->
     <bean id="proxyPrincipalResolver"
@@ -131,7 +154,7 @@
     may go against a database or LDAP server.  The id should remain "attributeRepository" though.
     +-->
     <bean id="attributeRepository" class="org.jasig.services.persondir.support.StubPersonAttributeDao"
-            p:backingMap-ref="attrRepoBackingMap" />
+          p:backingMap-ref="attrRepoBackingMap" />
 
     <util:map id="attrRepoBackingMap">
         <entry key="uid" value="uid" />
@@ -145,7 +168,7 @@
     The name of this bean should remain "serviceRegistryDao".
     +-->
     <bean id="serviceRegistryDao" class="org.jasig.cas.services.InMemoryServiceRegistryDaoImpl"
-            p:registeredServices-ref="registeredServicesList" />
+          p:registeredServices-ref="registeredServicesList" />
 
     <util:list id="registeredServicesList">
         <bean class="org.jasig.cas.services.RegexRegisteredService"
@@ -177,17 +200,17 @@
     <bean id="healthCheckMonitor" class="org.jasig.cas.monitor.HealthCheckMonitor" p:monitors-ref="monitorsList" />
 
     <util:list id="monitorsList">
-      <bean class="org.jasig.cas.monitor.MemoryMonitor" p:freeMemoryWarnThreshold="10" />
-      <!--
-        NOTE
-        The following ticket registries support SessionMonitor:
-          * DefaultTicketRegistry
-          * JpaTicketRegistry
-        Remove this monitor if you use an unsupported registry.
-      -->
-      <bean class="org.jasig.cas.monitor.SessionMonitor"
-          p:ticketRegistry-ref="ticketRegistry"
-          p:serviceTicketCountWarnThreshold="5000"
-          p:sessionCountWarnThreshold="100000" />
+        <bean class="org.jasig.cas.monitor.MemoryMonitor" p:freeMemoryWarnThreshold="10" />
+        <!--
+          NOTE
+          The following ticket registries support SessionMonitor:
+            * DefaultTicketRegistry
+            * JpaTicketRegistry
+          Remove this monitor if you use an unsupported registry.
+        -->
+        <bean class="org.jasig.cas.monitor.SessionMonitor"
+              p:ticketRegistry-ref="ticketRegistry"
+              p:serviceTicketCountWarnThreshold="5000"
+              p:sessionCountWarnThreshold="100000" />
     </util:list>
 </beans>
