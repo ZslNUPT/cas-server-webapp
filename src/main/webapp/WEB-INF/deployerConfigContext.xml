@@ -89,7 +89,7 @@
     </bean>
 
     <!-- Required for proxy ticket mechanism. -->
-    <bean id="proxyAuthenticationHandler" p:requireSecure="false"
+    <bean id="proxyAuthenticationHandler"  p:requireSecure="false"
           class="org.jasig.cas.authentication.handler.support.HttpBasedServiceCredentialsAuthenticationHandler"
           p:httpClient-ref="httpClient" />
 
