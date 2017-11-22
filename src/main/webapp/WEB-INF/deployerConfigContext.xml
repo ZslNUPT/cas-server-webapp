@@ -114,17 +114,11 @@
         </property>
     </bean>
 
-    <!--  <bean id="dataSource" class="com.microsoft.sqlserver.jdbc.SQLServerXADataSource"
-             p:driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-             p:jdbcUrl="jdbc:sqlserver://130.130.0.56:1433;DatabaseName=dam_new20140404"
-             p:user="dam_new"
-             p:password="daba8002zxc_dam" />   -->
-
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-        <property name="url" value="jdbc:sqlserver://130.130.0.56:1433;DatabaseName=dam_new" />
-        <property name="username" value="dam_new" />
-        <property name="password" value="daba8002zxc_dam" />
+        <property name="url" value="jdbc:sqlserver://130.130.0.56:1433;DatabaseName=dam_new20140404" />
+        <property name="username" value="test_zuosl" />
+        <property name="password" value="sajlsa1122_jjjk" />
     </bean>
 
     <bean id="passwordEncoder" class="com.ecidi.dam.MyPasswordEncoder"

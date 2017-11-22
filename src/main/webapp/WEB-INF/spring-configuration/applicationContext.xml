@@ -137,6 +137,5 @@
     <!-- The scheduler bean wires up any triggers that define scheduled tasks -->
     <bean id="scheduler" class="org.jasig.cas.util.AutowiringSchedulerFactoryBean"/>
 
-    <!--<bean class="com.ecidi.dam.CorsConfigurerAdapter"/>-->
-            
+
 </beans>

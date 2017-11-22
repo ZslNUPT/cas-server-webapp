@@ -264,4 +264,9 @@
         c:cas-ref="centralAuthenticationService"
         c:tgtCookieGenerator-ref="ticketGrantingTicketCookieGenerator"
         c:warnCookieGenerator-ref="warnCookieGenerator"/>
+
+  <bean id="modeCheckAction" class="com.ecidi.dam.ModeCheckAction" />
+
+  <bean id="authenticationViaRFormAction" class="com.ecidi.dam.AuthenticationViaRFormAction" p:centralAuthenticationService-ref="centralAuthenticationService" p:ticketRegistry-ref="ticketRegistry"/>
+
 </beans>
